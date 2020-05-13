@@ -121,7 +121,6 @@ namespace LiquidityBot
 		{
 			// Create markets that we want to target
 			// The markets must exist in NebliDex
-			/*
 			marketList.Add(new Market("NDEX/NEBL",0.1m,"neblidex","neblio"));
 			marketList.Add(new Market("NDEX/BTC",0.1m,"neblidex","bitcoin"));
 			marketList.Add(new Market("NDEX/LTC",0.1m,"neblidex","litecoin"));
@@ -134,9 +133,6 @@ namespace LiquidityBot
 			marketList.Add(new Market("NEBL/BTC",0.1m,"neblio","bitcoin"));
 			marketList.Add(new Market("ETH/BTC",0.1m,"ethereum","bitcoin"));
 			marketList.Add(new Market("LTC/BTC",0.1m,"litecoin","bitcoin"));
-			*/
-			//marketList.Add(new Market("NDEX/NEBL",0.1m,"neblidex","neblio"));
-			marketList.Add(new Market("NDEX/BTC",0.1m,"neblidex","bitcoin"));
 			
 			// Start the Timer
 			Console.WriteLine("Markets loaded");
