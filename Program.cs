@@ -41,7 +41,7 @@ namespace LiquidityBot
 		public static string coinGeckoEndpoint = "https://api.coingecko.com/api/v3/simple/price/";
 		public static string traderAPIEndpoint = "http://localhost:6328/"; // Address to the localhost Trader server
 		public static int maximumOrders = 48; // The maximum amount of open orders possible on NebliDex, set by total markets
-		public static int currentMarket = 0; // Bot checks a market from the list every 1 minute
+		public static int currentMarket = 0; // Bot checks a market from the list every 5 minute
 		
 		public static Timer PeriodicTimer;
 		public static bool program_running = true;
