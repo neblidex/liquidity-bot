@@ -17,7 +17,7 @@ using Newtonsoft.Json.Linq;
 // This is a simple market making Liquidity Bot used in conjunction with the NebliDex trading engine
 // Features of this bot include:
 // - Creating 2 buy and 2 sell orders in desired markets with a certain spread amount
-// - Amount is based on desired percentage of wallet and minAmount is a desired percentage of amount
+// - Amount is based on desired percentage of wallet and minAmount is a desired minimum USD amount to move
 // - If price discovery is required (no open orders), NDEX has a minimum USD ask price and separate maximum bid price and all other pairs are pulled from CoinGecko
 // - The orders will close and reopen if the prices (pulled from centralized platforms) change quickly
 // - If spread is less than current spread, spread will expand to be average price between highest to lowest on the ask and bid
