@@ -47,11 +47,10 @@ namespace LiquidityBot
 		public static bool program_running = true;
 		
 		// Customizable values
-		public static decimal maximumNDEXBid = 0.0001m; // This is the maximum USD price we will buy NDEX for
-		public static decimal minimumNDEXAsk = 0.02m; // This is the minimum USD price we will sell NDEX for		
+		public static decimal maximumNDEXBid = 0.0001m; // This is the maximum USD price we will buy NDEX in price discovery
+		public static decimal minimumNDEXAsk = 0.02m; // This is the minimum USD price we will sell NDEX in price discovery
 		public static decimal maxWalletUtilize = 0.75m;  // The maximum percentage of coins in the wallet that can be utilized for trading
-		public static decimal minAmountPercent = 0.5m; // The percentage of the amount that is the minAmount to trade
-		public static decimal minTradeAmountUSD = 50m; // The smallest trade amount in USD, if wallet is smaller than this, will not open trade		
+		public static decimal minTradeAmountUSD = 10m; // The smallest trade amount in USD, if wallet is smaller than this, will not open trade		
 		
 		public static List<Market> marketList = new List<Market>(); // A list of all markets traded
 		
@@ -132,11 +131,11 @@ namespace LiquidityBot
 			marketList.Add(new Market("NDEX/ETH",0.1m,"neblidex","ethereum"));
 			marketList.Add(new Market("NEBL/BTC",0.1m,"neblio","bitcoin"));
 			marketList.Add(new Market("ETH/BTC",0.1m,"ethereum","bitcoin"));
-			marketList.Add(new Market("LTC/BTC",0.1m,"litecoin","bitcoin"));
 			
 			// Start the Timer
 			Console.WriteLine("Markets loaded");
 			PeriodicTimer = new Timer(new TimerCallback(CheckMarket),null,0,System.Threading.Timeout.Infinite); // Not ran again until called
+			Console.WriteLine("Running Liquidity Bot...");
 		}
 		
 		public static async void CheckMarket(object state)
@@ -320,11 +319,14 @@ namespace LiquidityBot
 							}							
 						}
 						target_price = Math.Round(target_price,8);
-						decimal target_amount = trade_balance * maxWalletUtilize;
-						decimal target_min_amount = target_amount * minAmountPercent;
+						decimal target_amount = Math.Round(trade_balance * maxWalletUtilize,8);
+						// Now we want to receive at least twice minTradeAmountUSD in base currency per trade
+						decimal target_min_amount = Math.Round(minTradeAmountUSD / (target_price * base_price),8);
+						target_min_amount = target_min_amount * 2; // First order is double the minimum amount
+						if(target_min_amount > target_amount){target_min_amount = target_amount;} // But make sure it is not greater
 						if(symbols[0] == "NDEX"){
 							// NDEX is NTP1 so it is indivisible
-							target_amount = Math.Floor(target_amount);
+							target_amount = Math.Floor(target_amount);							
 							target_min_amount = Math.Floor(target_min_amount);
 						}
 						bool good = await Task.Run(() => PostMakerOrder(1,target_price,target_amount,target_min_amount));
@@ -336,7 +338,9 @@ namespace LiquidityBot
 							// Post a second order slightly higher in price and lower in amount
 							target_price = Math.Round(target_price + target_price * 0.5m,8);
 							target_amount = target_amount - target_amount * 0.5m;
-							target_min_amount = target_amount * minAmountPercent;
+							if(target_min_amount < target_amount){
+								target_min_amount = Math.Round(target_min_amount / 2m,8);
+							}							
 							if(symbols[0] == "NDEX"){
 								// NDEX is NTP1 so it is indivisible
 								target_amount = Math.Floor(target_amount);
@@ -383,9 +387,12 @@ namespace LiquidityBot
 							}							
 						}
 						target_price = Math.Round(target_price,8);
-						decimal target_base_amount =base_balance * maxWalletUtilize;
+						decimal target_base_amount = base_balance * maxWalletUtilize;
 						decimal target_amount = Math.Round(target_base_amount / target_price,8);
-						decimal target_min_amount = target_amount * minAmountPercent;						
+						// Now we want to send at least twice minTradeAmountUSD in base currency per trade
+						decimal target_min_amount = Math.Round(minTradeAmountUSD / (target_price * base_price),8);
+						target_min_amount = target_min_amount * 2; // First order is double the minimum amount
+						if(target_min_amount > target_amount){target_min_amount = target_amount;} // But make sure it is not greater						
 						if(symbols[0] == "NDEX"){
 							// NDEX is NTP1 so indivisible
 							target_amount = Math.Floor(target_amount);
@@ -400,7 +407,9 @@ namespace LiquidityBot
 							// Post a second order slightly lower in price and lower in amount
 							target_price = Math.Round(target_price - target_price * 0.5m,8);
 							target_amount = target_amount - target_amount * 0.5m;
-							target_min_amount = target_amount * minAmountPercent;
+							if(target_min_amount < target_amount){
+								target_min_amount = Math.Round(target_min_amount / 2m,8);
+							}
 							if(symbols[0] == "NDEX"){
 								// NDEX is NTP1 so it is indivisible
 								target_amount = Math.Floor(target_amount);
@@ -425,6 +434,7 @@ namespace LiquidityBot
 				PeriodicTimer.Change(sec_remain*1000,System.Threading.Timeout.Infinite); //Run again soon
 				currentMarket++;
 				if(currentMarket >= marketList.Count){
+					Console.WriteLine("All markets checked at "+UTCTime()+" UTC");
 					currentMarket = 0;
 				}
 			}
