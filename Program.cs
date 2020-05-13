@@ -49,9 +49,9 @@ namespace LiquidityBot
 		// Customizable values
 		public static decimal maximumNDEXBid = 0.0001m; // This is the maximum USD price we will buy NDEX for
 		public static decimal minimumNDEXAsk = 0.02m; // This is the minimum USD price we will sell NDEX for		
-		public static decimal maxWalletUtilize = 0.9m;  // The maximum percentage of coins in the wallet that can be utilized for trading
+		public static decimal maxWalletUtilize = 0.75m;  // The maximum percentage of coins in the wallet that can be utilized for trading
 		public static decimal minAmountPercent = 0.5m; // The percentage of the amount that is the minAmount to trade
-		public static decimal minTradeAmountUSD = 3m; // The smallest trade amount in USD, if wallet is smaller than this, will not open trade		
+		public static decimal minTradeAmountUSD = 50m; // The smallest trade amount in USD, if wallet is smaller than this, will not open trade		
 		
 		public static List<Market> marketList = new List<Market>(); // A list of all markets traded
 		
