@@ -420,7 +420,7 @@ namespace LiquidityBot
 			}finally{
 				LiquidityBotLog("Finished checking market");
 				int diff_time = UTCTime() - function_time; //The time this function took in seconds
-				int sec_remain = 60 - diff_time;
+				int sec_remain = 300 - diff_time;
 				if(sec_remain < 0){sec_remain = 0;}
 				PeriodicTimer.Change(sec_remain*1000,System.Threading.Timeout.Infinite); //Run again soon
 				currentMarket++;
