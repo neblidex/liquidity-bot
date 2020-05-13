@@ -337,10 +337,11 @@ namespace LiquidityBot
 						if(total_market_sell == 0){
 							// Post a second order slightly higher in price and lower in amount
 							target_price = Math.Round(target_price + target_price * 0.5m,8);
-							target_amount = target_amount - target_amount * 0.5m;
 							if(target_min_amount < target_amount){
 								target_min_amount = Math.Round(target_min_amount / 2m,8);
-							}							
+							}
+							target_amount = target_amount - target_amount * 0.5m;	
+							if(target_min_amount > target_amount){target_min_amount = target_amount;} // But make sure it is not greater							
 							if(symbols[0] == "NDEX"){
 								// NDEX is NTP1 so it is indivisible
 								target_amount = Math.Floor(target_amount);
@@ -406,10 +407,11 @@ namespace LiquidityBot
 						if(total_market_buy == 0){
 							// Post a second order slightly lower in price and lower in amount
 							target_price = Math.Round(target_price - target_price * 0.5m,8);
-							target_amount = target_amount - target_amount * 0.5m;
 							if(target_min_amount < target_amount){
 								target_min_amount = Math.Round(target_min_amount / 2m,8);
 							}
+							target_amount = target_amount - target_amount * 0.5m;
+							if(target_min_amount > target_amount){target_min_amount = target_amount;} // But make sure it is not greater
 							if(symbols[0] == "NDEX"){
 								// NDEX is NTP1 so it is indivisible
 								target_amount = Math.Floor(target_amount);
