@@ -1,5 +1,5 @@
 # Liquidity Bot for NebliDex Trader API
-A simple market maker bot that works with the NebliDex Trader API. Built on Windows but using Mono, it can be built on Mac and Linux. *Must be ran with NebliDex client, version at least 11.0.1.*
+A simple market maker bot that works with the NebliDex Trader API. Built on Windows but using Mono, it can be built on Mac and Linux. Must be ran with NebliDex client, version at least **11.0.1.**
 
 Use this bot to learn how to make bots for NebliDex or use this bot to trade. Adjust values specified by the code to customize the bot.
 
