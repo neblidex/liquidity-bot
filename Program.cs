@@ -184,7 +184,7 @@ namespace LiquidityBot
 				decimal base_balance = GetWalletBalance(symbols[1]);
 				if(trade_balance < 0 || base_balance < 0){ LiquidityBotLog("Problem obtaining balance"); return;}
 				
-				// Check my open orders and clear the list
+				// Check my open orders
 				int total_market_buy = 0;
 				int total_market_sell = 0;
 				int my_total_orders = 0;
@@ -309,7 +309,7 @@ namespace LiquidityBot
 							// Put the order at our requested spread
 							target_price = bid_price_max + bid_price_max * mk.desiredSpread;
 						}else{
-							// No spread available
+							// No spread available or negative
 							target_price = Math.Round(trade_price / base_price,8);
 							if(symbols[0] == "NDEX"){
 								// NDEX has a minimum price in price discovery phase
@@ -377,7 +377,7 @@ namespace LiquidityBot
 							// Put the order at our requested spread
 							target_price = ask_price_min - ask_price_min * mk.desiredSpread;
 						}else{
-							// No spread available
+							// No spread available or negative
 							target_price = Math.Round(trade_price / base_price,8);
 							if(symbols[0] == "NDEX"){
 								// NDEX has a minimum price in price discovery phase
