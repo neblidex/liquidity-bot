@@ -228,9 +228,9 @@ namespace LiquidityBot
 					mk.baseUSDPrice = base_price;
 				}else{
 					bool close_orders = false;
-					if((trade_price - mk.tradeUSDPrice) / mk.tradeUSDPrice > 0.05m){
+					if(Math.Abs((trade_price - mk.tradeUSDPrice) / mk.tradeUSDPrice) > 0.05m){
 						close_orders = true;						
-					}else if((base_price - mk.baseUSDPrice) / mk.baseUSDPrice > 0.05m){
+					}else if(Math.Abs((base_price - mk.baseUSDPrice) / mk.baseUSDPrice) > 0.05m){
 						close_orders = true;
 					}
 					if(close_orders == true){
