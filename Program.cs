@@ -207,7 +207,15 @@ namespace LiquidityBot
 									total_market_sell++;
 									type = 1;
 								}
-								ordersList.Add(new Order(ord["market"].ToString(),ord["orderID"].ToString(),type));
+								decimal price = decimal.Parse(ord["price"].ToString(),CultureInfo.InvariantCulture);
+								decimal amount = decimal.Parse(ord["amount"].ToString(),CultureInfo.InvariantCulture);
+								if((amount * price) * base_price >= minTradeAmountUSD){
+									ordersList.Add(new Order(ord["market"].ToString(),ord["orderID"].ToString(),type));
+								}else{
+									// Order is very small, close it
+									LiquidityBotLog("Closing small order");
+									CloseMyOrder(ord["orderID"].ToString());
+								}								
 							}
 							my_total_orders++;
 						}
