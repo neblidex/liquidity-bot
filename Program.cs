@@ -131,6 +131,7 @@ namespace LiquidityBot
 			marketList.Add(new Market("NDEX/ETH",0.1m,"neblidex","ethereum"));
 			marketList.Add(new Market("NEBL/BTC",0.1m,"neblio","bitcoin"));
 			marketList.Add(new Market("ETH/BTC",0.1m,"ethereum","bitcoin"));
+			marketList.Add(new Market("BTC/USDC",0.1m,"bitcoin","usd-coin"));
 			
 			// Start the Timer
 			Console.WriteLine("Markets loaded");
@@ -542,7 +543,7 @@ namespace LiquidityBot
 			string rawdata = HttpRequest(coinGeckoEndpoint,"ids="+symbol_id+"&vs_currencies=usd",false,3);				
 			if(rawdata.Length > 0){
 				JObject js = JObject.Parse(rawdata);
-				return decimal.Parse(js[symbol_id]["usd"].ToString(),CultureInfo.InvariantCulture);
+				return decimal.Parse(js[symbol_id]["usd"].ToString(),NumberStyles.Float,CultureInfo.InvariantCulture);
 			}
 			return -1;			
 		}
